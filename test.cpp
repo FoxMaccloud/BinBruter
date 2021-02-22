@@ -2,8 +2,23 @@
 
 int main()
 {
-    std::cout << "Password: " << std::endl;
-    int x;
+    std::string pass = "1234";
+
+
+
+    std::cout << "Please enter pin code!: " << std::endl;
+    std::cout << "pin: " << std::endl;
+    std::string  x;
     std::cin >> x;
-    std::cout << "x = " << x << std::endl;
+
+    if (x == pass)
+    {
+        std::cout << "Welcome user!" << std::endl;
+        return 0;
+    }
+    else
+    {
+        std::cout << "Wrong!" << std::endl;
+        return 0;
+    }
 }

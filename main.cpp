@@ -25,17 +25,12 @@ void helpMenu()
     std::cout << "" << std::endl;
 }
 
-void brute()
+std::string passGen()
 {
+    std::string pass;
 
-    std::string test = "1234";
-
-    subprocess::popen cmd(vars.binary, {});
-    cmd.stdin() << test << std::endl;
-
-    cmd.close();
-
-    std::cout << cmd.stdout().rdbuf();
+    pass = "1234";
+    return pass;
 }
 
 bool solved()
@@ -43,10 +38,16 @@ bool solved()
 
 }
 
-std::string passGen()
+void brute()
 {
 
+    subprocess::popen process(vars.binary, {});
+    process.stdin() << passGen() << std::endl;
 
+
+    process.close();
+
+    std::cout << process.stdout().rdbuf();
 }
 
 
@@ -66,7 +67,8 @@ int main(int argc, char **argv)
         }
     }
 
-    vars.binary = (std::string) argv[1];
+    std::string path = "./";
+    vars.binary = path + (std::string) argv[1];
     vars.whenSolved = (std::string) argv[2];
 
     brute();
