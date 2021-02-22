@@ -29,27 +29,44 @@ void helpMenu()
 
 std::string passGen()
 {
-    std::string pass;
+    std::string passwd;
 
-    pass = "1234";
-    return pass;
+    passwd = "1234";
+    return passwd;
 }
 
-bool solved()
+bool solved(std::string output)
 {
 
+    if (output != vars.whenSolved){
+        return true;
+    }
+    return false;
 }
 
+// TODO: Make this multithreaded.
 void brute()
 {
+    std::string passwd = passGen()
 
     subprocess::popen process(vars.binary, {});
-    process.stdin() << passGen() << std::endl;
+    process.stdin() << passwd << std::endl;
 
 
     process.close();
-    //std::string output = process.stdout().rdbuf();
+    
+    // Figure out how to turn stdout to a string...
+    // std::string output = process.stdout().rdbuf();
+    
 
+    vars.isSolved = solved(output);
+
+    if (vars.isSolved)
+    {
+        std::cout << "######################################" << std::endl;
+        std::cout << "PASSWORD FOUND: " << passwd << std::endl;
+        std::cout << "######################################" << std::endl;
+    }
 
 }
 
@@ -75,10 +92,10 @@ int main(int argc, char **argv)
     vars.whenSolved = (std::string) argv[2];
 
 
-/*    do
+    do
     {
         brute();
-    } while (!vars.isSolved)
-*/
+    } while (!vars.isSolved);
+
     return 0;
 }
