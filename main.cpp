@@ -2,7 +2,18 @@
 #include <iostream>
 #include <string>
 #include <cassert>
+#include "subprocess.hpp"
 
+
+struct variables
+{
+    std::string binary;
+    std::string whenSolved;
+
+    //other vars
+
+
+}vars;
 
 
 void helpMenu()
@@ -14,12 +25,26 @@ void helpMenu()
     std::cout << "" << std::endl;
 }
 
-void brute(std::string binary, std::string test)
+void brute()
 {
-    std::string command = test + " " + binary;
-    
-    
 
+    std::string test = "1234";
+
+    subprocess::popen cmd(vars.binary, {});
+    cmd.stdin() << test << std::endl;
+
+    cmd.close();
+
+    std::cout << cmd.stdout().rdbuf();
+}
+
+bool solved()
+{
+
+}
+
+std::string passGen()
+{
 
 
 }
@@ -41,13 +66,10 @@ int main(int argc, char **argv)
         }
     }
 
-    const std::string binary = (const std::string) argv[1];
-    const std::string whenSolved = (const std::string) argv[2];
+    vars.binary = (std::string) argv[1];
+    vars.whenSolved = (std::string) argv[2];
 
-
-    const std::string testString = "asdf";
-
-    //brute(binary, testString);
+    brute();
     
 
 
