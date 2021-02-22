@@ -47,7 +47,7 @@ bool solved(std::string output)
 // TODO: Make this multithreaded.
 void brute()
 {
-    std::string passwd = passGen()
+    std::string passwd = passGen();
 
     subprocess::popen process(vars.binary, {});
     process.stdin() << passwd << std::endl;
@@ -56,7 +56,9 @@ void brute()
     process.close();
     
     // Figure out how to turn stdout to a string...
-    // std::string output = process.stdout().rdbuf();
+    std::string output;
+
+    // output = process.stdout().rdbuf();
     
 
     vars.isSolved = solved(output);
