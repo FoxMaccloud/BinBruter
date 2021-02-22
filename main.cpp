@@ -9,6 +9,7 @@ struct variables
 {
     std::string binary;
     std::string whenSolved;
+    bool isSolved = false;
 
     //other vars
 
@@ -19,9 +20,10 @@ struct variables
 void helpMenu()
 {
     std::cout << "\nBinBrute version 0.1" << std::endl;
-    std::cout << "use:" << std::endl;
-    std::cout << "./binbrute binary condition args" << std::endl;
-    std::cout << "--help help menu" << std::endl;
+    std::cout << "\nUsage:" << std::endl;
+    std::cout << "  ./binbrute binary whenSolvedCondition args" << std::endl;
+    std::cout << "\nFlags:" << std::endl;
+    std::cout << " -h, --help    help for binbrute" << std::endl;
     std::cout << "" << std::endl;
 }
 
@@ -46,8 +48,9 @@ void brute()
 
 
     process.close();
+    //std::string output = process.stdout().rdbuf();
 
-    std::cout << process.stdout().rdbuf();
+
 }
 
 
@@ -71,9 +74,11 @@ int main(int argc, char **argv)
     vars.binary = path + (std::string) argv[1];
     vars.whenSolved = (std::string) argv[2];
 
-    brute();
-    
 
-
+/*    do
+    {
+        brute();
+    } while (!vars.isSolved)
+*/
     return 0;
 }
