@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include <vector>
 #include "subprocess.hpp"
 
 
@@ -21,12 +22,31 @@ struct variables
     bool special = false;
     //other vars
 
+    bool addWords = true;
+    std::vector<std::string> words;
+    int iteration = 0;
+
 }vars;
 
-void helpMenu()
+void menu()
 {
     // TODO: Clean up this mess of a help menu...
-    std::cout << "\nBinBrute version 0.1" << std::endl;
+    
+    std::cout << "\n ▄▄▄▄    ██▓ ███▄    █     ▄▄▄▄    ██▀███   █    ██ ▄▄▄█████▓▓█████  ██▀███  " << std::endl;
+    std::cout << "▓█████▄ ▓██▒ ██ ▀█   █    ▓█████▄ ▓██ ▒ ██▒ ██  ▓██▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒" << std::endl;
+    std::cout << "▒██▒ ▄██▒██▒▓██  ▀█ ██▒   ▒██▒ ▄██▓██ ░▄█ ▒▓██  ▒██░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒" << std::endl;
+    std::cout << "▒██░█▀  ░██░▓██▒  ▐▌██▒   ▒██░█▀  ▒██▀▀█▄  ▓▓█  ░██░░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄  " << std::endl;
+    std::cout << "░▓█  ▀█▓░██░▒██░   ▓██░   ░▓█  ▀█▓░██▓ ▒██▒▒▒█████▓   ▒██▒ ░ ░▒████▒░██▓ ▒██▒" << std::endl;
+    std::cout << "░▒▓███▀▒░▓  ░ ▒░   ▒ ▒    ░▒▓███▀▒░ ▒▓ ░▒▓░░▒▓▒ ▒ ▒   ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░" << std::endl;
+    std::cout << "▒░▒   ░  ▒ ░░ ░░   ░ ▒░   ▒░▒   ░   ░▒ ░ ▒░░░▒░ ░ ░     ░     ░ ░  ░  ░▒ ░ ▒░" << std::endl;
+    std::cout << " ░    ░  ▒ ░   ░   ░ ░     ░    ░   ░░   ░  ░░░ ░ ░   ░         ░     ░░   ░ " << std::endl;
+    std::cout << " ░       ░           ░     ░         ░        ░                 ░  ░   ░     " << std::endl;
+    std::cout << "      ░                         ░                                            " << std::endl;
+    std::cout << "version 0.1" << std::endl;
+}
+void helpMenu()
+{
+    menu();
     std::cout << "\nUsage:" << std::endl;
     std::cout << "  ./binbrute binary args" << std::endl;
     std::cout << "\nArguments:" << std::endl;
@@ -39,11 +59,11 @@ void helpMenu()
     std::cout << " -l, --letters            Use letters                         A-Za-z"                                     << std::endl;
     std::cout << " -s, --special            Use special characters               !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"         << std::endl;
     std::cout << "\nExamples:" << std::endl;
-    std::cout << "./binbrute binary -c \"wrong password\" -w \"rockyou.txt\""                                               << std::endl;
+    std::cout << "\n./binbrute binary -c \"wrong password\" -w \"rockyou.txt\""                                               << std::endl;
     std::cout << "  using a wordlist to bruteforce a binary until the output changes from \"wrong password\"."              << std::endl;
-    std::cout << "./binbrute binary -d \"welcome \" -l"                                                                     << std::endl;
+    std::cout << "\n./binbrute binary -d \"welcome \" -l"                                                                     << std::endl;
     std::cout << "  brute force binary until stdout message contains welcome."                                              << std::endl;
-    std::cout << "./binbrute binary -c \"\" -n -l -s"                                                                       << std::endl;
+    std::cout << "\n./binbrute binary -c \"\" -n -l -s"                                                                       << std::endl;
     std::cout << "  using a combination of numbers, letters and special characters to bruteforce until there is an output." << std::endl;
     std::cout << "" << std::endl;
 }
@@ -52,6 +72,33 @@ std::string passGen()
 {
     // TODO: Make this
     std::string passwd;
+
+
+    if (vars.wordlist && vars.addWords)
+    {
+        std::ifstream in(vars.wordlistPath);
+        if (!in)
+        {
+            std::cout << "ERROR: couldn't get wordlist path!" << std::endl;
+            exit(1);
+        }
+        while (std::getline(in, passwd))
+        {
+            if (passwd.size() > 0)
+            {
+                vars.words.push_back(passwd);
+            }
+        }
+        vars.addWords = !vars.addWords;
+    }
+    if (vars.wordlist && !vars.addWords)
+    {
+        std::string tmp = vars.words[vars.iteration];
+        vars.iteration++;
+        return tmp;
+    }
+    
+
 
     passwd = "1234";
     return passwd;
@@ -127,6 +174,7 @@ int main(int argc, char **argv)
             vars.whenSolvedD = true;
 
         }
+        // TODO: Make the path for the wordlist not a std::string
         if ((arg == "-w") || (arg == "--wordlist"))
         {
             vars.wordlistPath = argv[i+1];
@@ -159,6 +207,7 @@ int main(int argc, char **argv)
     std::string path = "./";
     vars.binary = path + (std::string) argv[1];
 
+    menu();
     
     std::cout << "Starting!" << std::endl;
     if (vars.whenSolvedC)

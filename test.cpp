@@ -2,7 +2,7 @@
 
 int main()
 {
-    std::string pass = "1234";
+    std::string pass = "magic1";
 
 
 
