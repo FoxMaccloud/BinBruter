@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cassert>
 #include "subprocess.hpp"
@@ -19,12 +20,11 @@ struct variables
     bool special = false;
     //other vars
 
-
 }vars;
-
 
 void helpMenu()
 {
+    // TODO: Clean up this mess of a help menu...
     std::cout << "\nBinBrute version 0.1" << std::endl;
     std::cout << "\nUsage:" << std::endl;
     std::cout << "  ./binbrute binary args" << std::endl;
@@ -48,6 +48,7 @@ void helpMenu()
 
 std::string passGen()
 {
+    // TODO: Make this
     std::string passwd;
 
     passwd = "1234";
@@ -57,7 +58,12 @@ std::string passGen()
 bool solved(std::string output)
 {
 
-    if (output != vars.whenSolved){
+    if (output != vars.whenSolved && vars.whenSolvedC && !vars.whenSolvedD)
+    {
+        return true;
+    }
+    if (output == vars.whenSolved && !vars.whenSolvedC && vars.whenSolvedD)
+    {
         return true;
     }
     return false;
@@ -66,20 +72,18 @@ bool solved(std::string output)
 // TODO: Make this multithreaded.
 void brute()
 {
+    // Generate the next pass to try
     std::string passwd = passGen();
-
+    // Invoke the binary and give it the pass as stdin
     subprocess::popen process(vars.binary, {});
     process.stdin() << passwd << std::endl;
-
-
     process.close();
-    
-    // Figure out how to turn stdout to a string...
+    // Save the output of the string
+    std::ostringstream tmp;
     std::string output;
-
-    // output = process.stdout().rdbuf();
-    
-
+    tmp <<  process.stdout().rdbuf();
+    output = tmp.str();
+    // TODO: Fix the check
     vars.isSolved = solved(output);
 
     if (vars.isSolved)
@@ -94,6 +98,7 @@ void brute()
 
 int main(int argc, char **argv)
 {
+    // TODO: Fix the argparseing cause it's shit!
     if (argc < 2) {
         helpMenu();
         return 0;
