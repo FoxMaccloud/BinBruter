@@ -11,6 +11,7 @@ struct variables
     std::string binary;
     std::string whenSolved;
     std::string wordlistPath;
+    int threads;
     bool wordlist = false;
     bool whenSolvedC;
     bool whenSolvedD;
@@ -32,6 +33,7 @@ void helpMenu()
     std::cout << " -h, --help               help for binbrute"                                                              << std::endl;
     std::cout << " -d, --done               stdout string for when solved       --done \"succsess\""                        << std::endl;
     std::cout << " -c, --changed            solved when stdout changes          --changed \"wrong password\""               << std::endl;
+    std::cout << " -t, --threads            How many threads to use             --threads 200"                              << std::endl;
     std::cout << " -w, --wordlist path      path to wordlist to use             --wordlist rockyou.txt"                     << std::endl;
     std::cout << " -n, --numbers            Use numbers                         0-9"                                        << std::endl;
     std::cout << " -l, --letters            Use letters                         A-Za-z"                                     << std::endl;
@@ -130,6 +132,11 @@ int main(int argc, char **argv)
             vars.wordlistPath = argv[i+1];
             vars.wordlist = true;
 
+        }
+        if ((arg == "-t") || (arg == "--threads"))
+        {
+            // TODO: figure how to cast this to int.
+            //vars.threads = argv[i+1];
         }
         if ((arg == "-n") || (arg == "--numbers"))
         {
