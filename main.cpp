@@ -44,6 +44,7 @@ void menu()
     std::cout << "      ░                         ░                                            " << std::endl;
     std::cout << "version 0.1" << std::endl;
 }
+
 void helpMenu()
 {
     menu();
