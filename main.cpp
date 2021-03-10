@@ -6,7 +6,6 @@
 #include <vector>
 #include "subprocess.hpp"
 
-
 struct variables
 {
     std::string binary;
@@ -145,7 +144,6 @@ void brute()
 
 }
 
-
 int main(int argc, char **argv)
 {
     // TODO: Fix the argparseing cause it's shit!
@@ -205,6 +203,7 @@ int main(int argc, char **argv)
             return 0;
         }
     }
+    
     std::string path = "./";
     vars.binary = path + (std::string) argv[1];
 
