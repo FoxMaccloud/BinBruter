@@ -4,8 +4,7 @@ int main()
 {
     std::string pass = "magic1";
 
-
-
+    
     std::cout << "Please enter pin code!: " << std::endl;
     std::cout << "pin: " << std::endl;
     std::string  x;
