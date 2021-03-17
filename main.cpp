@@ -122,6 +122,7 @@ bool solved(std::string output)
 void brute()
 {
     // Generate the next pass to try
+    // Figure out how to get diffrent passwds everytime passgen is called for multithreading.
     std::string passwd = passGen();
     // Invoke the binary and give it the pass as stdin
     subprocess::popen process(vars.binary, {});
