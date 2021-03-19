@@ -25,6 +25,7 @@ struct variables
     std::vector<std::string> words;
     int iteration = 0;
 
+    
 }vars;
 
 void menu()
